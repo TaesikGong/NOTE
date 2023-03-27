@@ -1,4 +1,4 @@
-# NOTE: Robust Continual Test-time Adaptation Against Temporal Correlation (NeurIPS '22)
+# 📝NOTE: Robust Continual Test-time Adaptation Against Temporal Correlation (NeurIPS '22)
 
 This is the official PyTorch Implementation of "NOTE: Robust Continual Test-time Adaptation Against Temporal Correlation (NeurIPS '22)" by [Taesik Gong](https://taesikgong.com/), [Jongheon Jeong](https://jh-jeong.github.io/), Taewon Kim, [Yewon Kim](https://yewon-kim.com/), [Jinwoo Shin](https://alinlab.kaist.ac.kr/shin.html), and [Sung-Ju Lee](https://sites.google.com/site/wewantsj/).
 
