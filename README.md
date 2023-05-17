@@ -109,7 +109,7 @@ We tested our codes under this environment.
 ```
 @inproceedings{gong2022note,
     author = {Gong, Taesik and Jeong, Jongheon and Kim, Taewon and Kim, Yewon and Shin, Jinwoo and Lee, Sung-Ju},
-    title = {NOTE: Robust Continual Test-time Adaptation Against Temporal Correlation},
+    title = {{NOTE}: Robust Continual Test-time Adaptation Against Temporal Correlation},
     booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
     year = {2022}
 }
