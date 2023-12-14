@@ -56,6 +56,8 @@ def main():
         opt = conf.CIFAR100Opt
     elif 'cifar10' in conf.args.dataset:
         opt = conf.CIFAR10Opt
+    elif 'imagenet' in conf.args.dataset:
+        opt = conf.ImageNetOpt
 
     conf.args.opt = opt
     if conf.args.lr:
@@ -69,6 +71,8 @@ def main():
     if conf.args.model == "resnet18":
         from models import ResNet
         model = ResNet.ResNet18()
+    elif conf.args.model == "resnet18_pretrained":
+        model = torchvision.models.resnet18(pretrained=True)
 
     # import modules after setting the seed
     from data_loader import data_loader as data_loader

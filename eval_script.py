@@ -127,7 +127,7 @@ def ret_avg_acc(seed, dist, method, dataset, pattern):
 def main(args):
 
     if args.dataset == "all":
-        dataset_list = ['cifar10', 'cifar100']
+        dataset_list = ['cifar10', 'cifar100', 'imagenet']
     else:
         dataset_list = [args.dataset]
 
@@ -153,7 +153,7 @@ def parse_arguments(argv):
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', type=str, default='all',
-                        help='dataset used. [cifar10, cifar100, all]')
+                        help='dataset used. [cifar10, cifar100, imagenet, all]')
     parser.add_argument('--method', type=str, default='all',
                         help='method used. [src, bnstats, onda, pl, tent, lame, cotta, note, note_iid, all]')
     parser.add_argument('--seed', type=str, default='all',

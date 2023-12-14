@@ -6,6 +6,8 @@ _CIFAR10_STDDEV = [0.2471, 0.2435, 0.2616]
 _CIFAR100_MEAN = [0.5071, 0.4865, 0.4409]
 _CIFAR100_STDDEV = [0.2673, 0.2564, 0.2762]
 
+_IMAGENET_MEAN = [0.485, 0.456, 0.406]
+_IMAGENET_STDDEV = [0.229, 0.224, 0.225]
 
 class NormalizeLayer(torch.nn.Module):
     """Standardize the channels of a batch of images by subtracting the dataset mean
@@ -33,5 +35,7 @@ def get_normalize_layer(dataset):
         return NormalizeLayer(_CIFAR10_MEAN, _CIFAR10_STDDEV)
     elif dataset == "cifar100":
         return NormalizeLayer(_CIFAR100_MEAN, _CIFAR100_STDDEV)
+    elif dataset == 'imagenet':
+        return NormalizeLayer(_IMAGENET_MEAN, _IMAGENET_STDDEV)
     else:
         return None

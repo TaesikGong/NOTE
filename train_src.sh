@@ -39,25 +39,35 @@ train_source_model() {
         EPOCH=200
         MODEL="resnet18"
         TGT="test"
+        SEEDS="0 1 2"
       elif [ "${DATASET}" = "cifar100" ]; then
         EPOCH=200
         MODEL="resnet18"
         TGT="test"
+        SEEDS="0 1 2"
+      elif [ "${DATASET}" = "imagenet" ]; then
+        EPOCH=30
+        MODEL="resnet18_pretrained"
+        TGT="test"
+        SEEDS="0" #for fair comparision with the pytorch-provided pre-trained model
       fi
 
-      for SEED in 0 1 2; do
+      for SEED in $SEEDS ; do
         if [[ "$METHOD" == *"Src"* ]]; then
-          #### Train with BN
           for tgt in $TGT; do
-            python main.py --gpu_idx ${GPUS[i % ${NUM_GPUS}]} --dataset $DATASET --method Src --tgt ${tgt} --model $MODEL --epoch $EPOCH --update_every_x ${update_every_x} --memory_size ${memory_size} --seed $SEED \
-              --log_prefix ${LOG_PREFIX}_${SEED} \
-              ${validation} \
-              2>&1 | tee raw_logs/${DATASET}_${LOG_PREFIX}_${SEED}_job${i}.txt &
 
-            i=$((i + 1))
-            wait_n
+            #### Train with BN
+            if [ "${DATASET}" != "imagenet" ]; then
+              python main.py --gpu_idx ${GPUS[i % ${NUM_GPUS}]} --dataset $DATASET --method Src --tgt ${tgt} --model $MODEL --epoch $EPOCH --update_every_x ${update_every_x} --memory_size ${memory_size} --seed $SEED \
+                --log_prefix ${LOG_PREFIX}_${SEED} \
+                ${validation} \
+                2>&1 | tee raw_logs/${DATASET}_${LOG_PREFIX}_${SEED}_job${i}.txt &
 
-            ### Train with IABN, no fuse
+              i=$((i + 1))
+              wait_n
+            fi
+
+            ### Train with IABN
             for iabn_k in 4; do
               python main.py --gpu_idx ${GPUS[i % ${NUM_GPUS}]} --dataset $DATASET --method Src --tgt ${tgt} --model $MODEL --epoch $EPOCH --update_every_x ${update_every_x} --memory_size ${memory_size} --seed $SEED \
                 --iabn --iabn_k ${iabn_k} \

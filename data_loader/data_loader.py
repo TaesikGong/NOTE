@@ -5,6 +5,7 @@ import time
 import math
 from .CIFAR10Dataset import CIFAR10Dataset
 from .CIFAR100Dataset import CIFAR100Dataset
+from .ImageNetDataset import ImageNetDataset
 
 import os
 import pickle
@@ -166,6 +167,17 @@ def domain_data_loader(dataset, domains, file_path, batch_size, train_max_rows=n
         if not loaded_data:
             loaded_data = CIFAR100Dataset(file=file_path, domains=cond, max_source=num_source, transform=transform)
             save_cache(loaded_data, dataset, processed_domains, file_path, transform=transform)
+
+    elif dataset in ['imagenet']:
+
+        cond = processed_domains
+        transform = 'src' if is_src else 'val'
+        loaded_data = load_cache(dataset, processed_domains, file_path, transform=transform)
+        #
+        if not loaded_data:
+            loaded_data = ImageNetDataset(file=file_path, domains=cond, max_source=num_source, transform=transform)
+            save_cache(loaded_data, dataset, processed_domains, file_path, transform=transform)
+
 
     train_data = loaded_data
     entire_datasets.append(train_data)

@@ -41,12 +41,13 @@ class DNN():
         self.conf_list = []
 
         # Load model
-        if conf.args.model in ['wideresnet28-10', 'resnext29']:
-            self.net = model
-        elif 'resnet' in conf.args.model:
-            num_feats = model.fc.in_features
-            model.fc = nn.Linear(num_feats, conf.args.opt['num_class']) # match class number
-            self.net = model
+        if 'resnet' in conf.args.model:
+            if conf.args.dataset == 'imagenet':
+                self.net = model
+            else:
+                num_feats = model.fc.in_features
+                model.fc = nn.Linear(num_feats, conf.args.opt['num_class']) # match class number
+                self.net = model
         else:
             self.net = model.Net()
 
@@ -55,7 +56,7 @@ class DNN():
         if conf.args.iabn:
             iabn.convert_iabn(self.net)
 
-        if conf.args.load_checkpoint_path and conf.args.model not in ['wideresnet28-10', 'resnext29']:  # false if conf.args.load_checkpoint_path==''
+        if conf.args.load_checkpoint_path:  # false if conf.args.load_checkpoint_path==''
             self.load_checkpoint(conf.args.load_checkpoint_path)
 
         # Add normalization layers
@@ -83,18 +84,20 @@ class DNN():
                                   nesterov=True)
 
                 self.scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(self.optimizer, T_max=conf.args.epoch * len(self.source_dataloader['train']))
-            elif conf.args.dataset in ['tinyimagenet']:
-                    self.optimizer = torch.optim.SGD(
-                        self.net.parameters(),
-                        conf.args.opt['learning_rate'],
-                        momentum=conf.args.opt['momentum'],
-                        weight_decay=conf.args.opt['weight_decay'],
-                        nesterov=True)
+
+            elif conf.args.dataset in ['imagenet']:
+                self.optimizer = torch.optim.SGD(
+                    self.net.parameters(),
+                    conf.args.opt['learning_rate'],
+                    momentum=conf.args.opt['momentum'],
+                    weight_decay=conf.args.opt['weight_decay'],
+                    nesterov=True)
+        else: # TTA
+            if conf.args.method == 'TENT' and conf.args.dataset == 'imagenet': # TENT use SGD for imagenet
+                self.optimizer = optim.SGD(self.net.parameters(), lr=conf.args.opt['learning_rate'],
+                                            weight_decay=conf.args.opt['weight_decay'])
             else:
                 self.optimizer = optim.Adam(self.net.parameters(), lr=conf.args.opt['learning_rate'],
-                                            weight_decay=conf.args.opt['weight_decay'])
-        else:
-            self.optimizer = optim.Adam(self.net.parameters(), lr=conf.args.opt['learning_rate'],
                                     weight_decay=conf.args.opt['weight_decay'])
 
         self.class_criterion = nn.CrossEntropyLoss()
