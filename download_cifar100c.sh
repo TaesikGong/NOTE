@@ -19,7 +19,7 @@ if [[ -f "$FILE_COR" ]]; then
 else
   echo "$FILE_COR does not exist. Start downloading..."
   cd dataset
-  wget https://zenodo.org/api/files/8fafaa0e-d7e5-448b-a5af-e8b5e1bd24ce/CIFAR-100-C.tar
+  wget https://zenodo.org/records/3555552/files/CIFAR-100-C.tar
   echo "Download succeeded. Start processing..."
 fi
 
