@@ -30,18 +30,32 @@ This code reproduces the results in Table 1:
 
 - CIFAR10-C
 - CIFAR100-C
+- ImageNet-C
 
 To run our codes, you first need to download at least one of the datasets. Run the following commands:
 
-    $cd .                           #project root
-    $. download_cifar10c.sh        #download CIFAR10/CIFAR10-C datasets
-    $. download_cifar100c.sh       #download CIFAR100/CIFAR100-C datasets
+    $cd .                           # project root
+    $. download_cifar10c.sh        # download CIFAR10/CIFAR10-C datasets
+    $. download_cifar100c.sh       # download CIFAR100/CIFAR100-C datasets
+    $cat download_imagenetc.md       # instruction for ImageNet/ImageNet-C datasets (please refer to the instruction)
+
 
 ## Run
 
 ### Prepare Source model
 
-"Source model" refers to a model that is trained with the source (clean) data only. Source models are required to all methods to perform test-time adaptation. You can generate source models via:
+"Source model" refers to a model that is trained with the source (clean) data only. Source models are required to all methods to perform test-time adaptation. 
+
+We provide pre-trained models:
+- [CIFAR10-C](https://drive.google.com/file/d/1YsyHY3rFCaWWDTOVh-RuI1I2bJ5i9Yey/view?usp=sharing)
+- [CIFAR100-C](https://drive.google.com/file/d/10JVqrgnTlG9Mbj7ogNww2MZZHHlFyzB8/view?usp=sharing)
+- [ImageNet-C](https://drive.google.com/file/d/18moC1ji6B_5NMF3VO7NW50hb-R4G_Ns2/view?usp=sharing)
+
+After extracting `log.zip`, put this folder to the project root directory, e.g., `NOTE/log`.
+For CIFAR10-C and CIFAR100-C, pre-trained models consist of without-IABN layers and with-IABN layers under three random seeds (0,1,2). For ImageNet-C, the pre-trained model is with-IABN layers under one random seed (0) because we use the torchvision-provided ResNet model for the without-IABN case.
+
+
+Alternatively, you can train source models via:
 
     $. train_src.sh                 #generate source models for CIFAR10 as default.
 
