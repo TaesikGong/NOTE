@@ -4,7 +4,7 @@ LOG_PREFIX="reproduce_methods"
 
 
 
-DATASETS="cifar10" # cifar10 or cifar100
+DATASETS="cifar10" # cifar10 or cifar100 or imagenet
 METHODS="NOTE" #Src BN_Stats ONDA PseudoLabel TENT CoTTA NOTE NOTE_iid
 
 echo DATASETS: $DATASETS

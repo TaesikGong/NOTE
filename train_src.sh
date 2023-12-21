@@ -1,6 +1,6 @@
 LOG_PREFIX="reproduce_src"
 
-DATASETS="cifar10" # cifar10 or cifar100
+DATASETS="cifar10" # cifar10 or cifar100 or imagenet
 METHODS="Src"
 
 echo DATASETS: $DATASETS
